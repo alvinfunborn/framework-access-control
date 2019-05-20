@@ -100,7 +100,7 @@ public class StandardController implements Controller {
                 }
             }
         }
-        return Result.ofDeny("permission not found");
+        return Result.ofUncertain("permission not found");
     }
 
     @Override
