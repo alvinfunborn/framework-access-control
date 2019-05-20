@@ -7,7 +7,13 @@ package com.alvin.framework.access.control.group;
  */
 public class Group {
 
+    /**
+     * group name
+     */
     private String group;
+    /**
+     * member name
+     */
     private String member;
 
     public Group(String group, String member) {

@@ -9,7 +9,18 @@ import java.util.List;
  */
 public interface GroupRepository {
 
-    List<String> recursiveGroups(String inferior);
+    /**
+     * list all groups of member recursively
+     *
+     * @param member member
+     * @return list of group
+     */
+    List<String> recursiveGroups(String member);
 
+    /**
+     * add group
+     *
+     * @param group group
+     */
     void addGroup(Group group);
 }

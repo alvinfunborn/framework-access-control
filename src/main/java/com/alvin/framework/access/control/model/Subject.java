@@ -2,11 +2,15 @@ package com.alvin.framework.access.control.model;
 
 /**
  * datetime 2019/5/17 14:41
+ * subject param of access control
  *
  * @author sin5
  */
 public class Subject {
 
+    /**
+     * role name
+     */
     private String role;
 
     public Subject(String role) {

@@ -2,12 +2,20 @@ package com.alvin.framework.access.control.result;
 
 /**
  * datetime 2019/5/16 20:10
+ * access control result
  *
  * @author sin5
  */
 public class Result {
 
+    /**
+     * result code
+     * @see ResultCode
+     */
     private ResultCode code;
+    /**
+     * message
+     */
     private String msg;
 
     private Result(ResultCode code, String msg) {

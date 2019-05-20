@@ -15,9 +15,9 @@ public class DefaultGroupRepository implements GroupRepository {
     private Map<String, List<String>> memberGroupMap = new HashMap<>();
 
     @Override
-    public List<String> recursiveGroups(String inferior) {
+    public List<String> recursiveGroups(String member) {
         List<String> result = new ArrayList<>();
-        recursiveGroups(inferior, result);
+        recursiveGroups(member, result);
         return result;
     }
 

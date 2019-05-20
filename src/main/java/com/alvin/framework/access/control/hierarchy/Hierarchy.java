@@ -7,7 +7,13 @@ package com.alvin.framework.access.control.hierarchy;
  */
 public class Hierarchy {
 
+    /**
+     * superior role
+     */
     private String superior;
+    /**
+     * inferior role
+     */
     private String inferior;
 
     public Hierarchy(String superior, String inferior) {

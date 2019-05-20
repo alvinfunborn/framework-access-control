@@ -9,12 +9,30 @@ import com.alvin.framework.access.control.condition.Condition;
  */
 public class Rule {
 
+    /**
+     * name of rule
+     */
     private String name;
 
+    /**
+     * role of rule
+     */
     private String role;
+    /**
+     * data of rule
+     */
     private String data;
+    /**
+     * action of rule
+     */
     private String action;
+    /**
+     * condition of rule
+     */
     private Condition condition;
+    /**
+     * if deny this combination
+     */
     private boolean deny;
 
     public static Rule ofPermit(String name, String role, String data, String action, Condition condition) {

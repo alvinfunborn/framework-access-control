@@ -9,7 +9,18 @@ import java.util.List;
  */
 public interface RoleHierarchyRepository {
 
+    /**
+     * list all inferiors of superior recursively
+     *
+     * @param superior superior
+     * @return list of inferior
+     */
     List<String> recursiveInferiors(String superior);
 
+    /**
+     * add hierarchy
+     *
+     * @param hierarchy hierarchy
+     */
     void addHierarchy(Hierarchy hierarchy);
 }

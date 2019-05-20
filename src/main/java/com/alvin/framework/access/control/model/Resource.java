@@ -2,11 +2,15 @@ package com.alvin.framework.access.control.model;
 
 /**
  * datetime 2019/5/17 14:42
+ * resource param of access control
  *
  * @author sin5
  */
 public class Resource {
 
+    /**
+     * data name
+     */
     private String data;
 
     public Resource(String data) {
