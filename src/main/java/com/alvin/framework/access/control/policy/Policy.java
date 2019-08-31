@@ -1,4 +1,4 @@
-package com.alvin.framework.access.control.rule;
+package com.alvin.framework.access.control.policy;
 
 import com.alvin.framework.access.control.condition.Condition;
 
@@ -7,43 +7,43 @@ import com.alvin.framework.access.control.condition.Condition;
  *
  * @author sin5
  */
-public class Rule {
+public class Policy {
 
     /**
-     * name of rule
+     * name of policy
      */
     private String name;
 
     /**
-     * role of rule
+     * role of policy
      */
     private String role;
     /**
-     * data of rule
+     * data of policy
      */
     private String data;
     /**
-     * action of rule
+     * action of policy
      */
     private String action;
     /**
-     * condition of rule
+     * condition of policy
      */
     private Condition condition;
     /**
-     * if deny this combination
+     * if DENY this combination
      */
     private boolean deny;
 
-    public static Rule ofPermit(String name, String role, String data, String action, Condition condition) {
-        return new Rule(name, role, data, action, condition, false);
+    public static Policy ofPermit(String name, String role, String data, String action, Condition condition) {
+        return new Policy(name, role, data, action, condition, false);
     }
 
-    public static Rule ofDeny(String name, String role, String data, String action, Condition condition) {
-        return new Rule(name, role, data, action, condition, true);
+    public static Policy ofDeny(String name, String role, String data, String action, Condition condition) {
+        return new Policy(name, role, data, action, condition, true);
     }
 
-    private Rule(String name, String role, String data, String action, Condition condition, boolean deny) {
+    private Policy(String name, String role, String data, String action, Condition condition, boolean deny) {
         this.name = name;
         this.role = role;
         this.data = data;

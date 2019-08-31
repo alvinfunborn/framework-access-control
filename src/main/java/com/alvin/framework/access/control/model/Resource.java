@@ -2,7 +2,7 @@ package com.alvin.framework.access.control.model;
 
 /**
  * datetime 2019/5/17 14:42
- * resource param of access control
+ * resource param for access enforce
  *
  * @author sin5
  */

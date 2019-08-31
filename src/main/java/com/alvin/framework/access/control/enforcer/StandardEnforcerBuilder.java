@@ -1,48 +1,48 @@
-package com.alvin.framework.access.control.controller;
+package com.alvin.framework.access.control.enforcer;
 
 import com.alvin.framework.access.control.group.ActionGroupRepository;
 import com.alvin.framework.access.control.group.DataGroupRepository;
 import com.alvin.framework.access.control.group.DefaultActionGroupRepository;
 import com.alvin.framework.access.control.group.DefaultDataGroupRepository;
 import com.alvin.framework.access.control.hierarchy.*;
-import com.alvin.framework.access.control.rule.DefaultRuleRepository;
-import com.alvin.framework.access.control.rule.RuleRepository;
+import com.alvin.framework.access.control.policy.DefaultPolicyRepository;
+import com.alvin.framework.access.control.policy.PolicyRepository;
 
 /**
  * datetime 2019/5/17 18:05
  *
  * @author sin5
  */
-public class StandardControllerBuilder {
+public class StandardEnforcerBuilder {
 
-    private RuleRepository ruleRepository;
+    private PolicyRepository policyRepository;
     private RoleHierarchyRepository roleHierarchyRepository;
     private DataGroupRepository dataHierarchyRepository;
     private ActionGroupRepository actionHierarchyRepository;
 
-    public StandardControllerBuilder withRuleRepository(RuleRepository ruleRepository) {
-        this.ruleRepository = ruleRepository;
+    public StandardEnforcerBuilder withRuleRepository(PolicyRepository policyRepository) {
+        this.policyRepository = policyRepository;
         return this;
     }
 
-    public StandardControllerBuilder withRoleHierarchyRepository(RoleHierarchyRepository roleHierarchyRepository) {
+    public StandardEnforcerBuilder withRoleHierarchyRepository(RoleHierarchyRepository roleHierarchyRepository) {
         this.roleHierarchyRepository = roleHierarchyRepository;
         return this;
     }
 
-    public StandardControllerBuilder withDataHierarchyRepository(DataGroupRepository dataHierarchyRepository) {
+    public StandardEnforcerBuilder withDataHierarchyRepository(DataGroupRepository dataHierarchyRepository) {
         this.dataHierarchyRepository = dataHierarchyRepository;
         return this;
     }
 
-    public StandardControllerBuilder withActionHierarchyRepository(ActionGroupRepository actionHierarchyRepository) {
+    public StandardEnforcerBuilder withActionHierarchyRepository(ActionGroupRepository actionHierarchyRepository) {
         this.actionHierarchyRepository = actionHierarchyRepository;
         return this;
     }
 
-    public StandardController build() {
-        if (ruleRepository == null) {
-            ruleRepository = new DefaultRuleRepository();
+    public StandardEnforcer build() {
+        if (policyRepository == null) {
+            policyRepository = new DefaultPolicyRepository();
         }
         if (roleHierarchyRepository == null) {
             roleHierarchyRepository = new DefaultRoleHierarchyRepository();
@@ -53,7 +53,7 @@ public class StandardControllerBuilder {
         if (actionHierarchyRepository == null) {
             actionHierarchyRepository = new DefaultActionGroupRepository();
         }
-        return new StandardController(ruleRepository, roleHierarchyRepository, dataHierarchyRepository, actionHierarchyRepository);
+        return new StandardEnforcer(policyRepository, roleHierarchyRepository, dataHierarchyRepository, actionHierarchyRepository);
     }
 
 }

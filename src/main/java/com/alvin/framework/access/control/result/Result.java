@@ -2,7 +2,7 @@ package com.alvin.framework.access.control.result;
 
 /**
  * datetime 2019/5/16 20:10
- * access control result
+ * access enforce result
  *
  * @author sin5
  */
@@ -32,50 +32,35 @@ public class Result {
     }
 
     public boolean isPermit() {
-        return this.code.equals(ResultCode.permit);
+        return this.code.equals(ResultCode.PERMIT);
     }
 
     public boolean isDeny() {
-        return this.code.equals(ResultCode.deny);
-    }
-
-    public boolean isUncertain() {
-        return this.code.equals(ResultCode.uncertain);
-    }
-
-    public boolean isImproper() {
-        return this.code.equals(ResultCode.improper);
+        return this.code.equals(ResultCode.DENY);
     }
 
     public static Result ofPermit(String msg) {
-        return new Result(ResultCode.permit, msg);
+        return new Result(ResultCode.PERMIT, msg);
     }
 
     public static Result ofPermit() {
-        return new Result(ResultCode.permit, null);
+        return new Result(ResultCode.PERMIT, null);
     }
 
     public static Result ofDeny(String msg) {
-        return new Result(ResultCode.deny, msg);
+        return new Result(ResultCode.DENY, msg);
     }
 
     public static Result ofDeny() {
-        return new Result(ResultCode.deny, null);
+        return new Result(ResultCode.DENY, null);
     }
+
     public static Result ofUncertain(String msg) {
-        return new Result(ResultCode.uncertain, msg);
+        return new Result(ResultCode.UNCERTAIN, msg);
     }
 
     public static Result ofUncertain() {
-        return new Result(ResultCode.uncertain, null);
-    }
-
-    public static Result ofImproper(String msg) {
-        return new Result(ResultCode.improper, msg);
-    }
-
-    public static Result ofImproper() {
-        return new Result(ResultCode.improper, null);
+        return new Result(ResultCode.UNCERTAIN, null);
     }
 
     public Result and(Result r) {
@@ -84,6 +69,10 @@ public class Result {
         } else {
             return this;
         }
+    }
+
+    public void replaceMsg(String msg) {
+        this.msg = msg;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.alvin.framework.access.control.controller;
+package com.alvin.framework.access.control.enforcer;
 
 import com.alvin.framework.access.control.condition.Condition;
 import com.alvin.framework.access.control.group.ActionGroupRepository;
@@ -7,8 +7,8 @@ import com.alvin.framework.access.control.group.Group;
 import com.alvin.framework.access.control.hierarchy.*;
 import com.alvin.framework.access.control.model.Resource;
 import com.alvin.framework.access.control.model.Subject;
-import com.alvin.framework.access.control.rule.Rule;
-import com.alvin.framework.access.control.rule.RuleRepository;
+import com.alvin.framework.access.control.policy.Policy;
+import com.alvin.framework.access.control.policy.PolicyRepository;
 import com.alvin.framework.access.control.result.Result;
 
 import java.util.ArrayList;
@@ -20,25 +20,25 @@ import java.util.stream.Collectors;
  *
  * @author sin5
  */
-public class StandardController implements Controller {
+public class StandardEnforcer implements Enforcer {
 
-    private RuleRepository ruleRepository;
+    private PolicyRepository policyRepository;
     private RoleHierarchyRepository roleHierarchyRepository;
     private DataGroupRepository dataGroupRepository;
     private ActionGroupRepository actionGroupRepository;
 
-    StandardController(RuleRepository ruleRepository,
-                               RoleHierarchyRepository roleHierarchyRepository,
-                               DataGroupRepository dataGroupRepository,
-                               ActionGroupRepository actionGroupRepository) {
-        this.ruleRepository = ruleRepository;
+    StandardEnforcer(PolicyRepository policyRepository,
+                     RoleHierarchyRepository roleHierarchyRepository,
+                     DataGroupRepository dataGroupRepository,
+                     ActionGroupRepository actionGroupRepository) {
+        this.policyRepository = policyRepository;
         this.roleHierarchyRepository = roleHierarchyRepository;
         this.dataGroupRepository = dataGroupRepository;
         this.actionGroupRepository = actionGroupRepository;
     }
 
     @Override
-    public <S extends Subject, R extends Resource> Result control(S subject, R resource, String action) {
+    public <S extends Subject, R extends Resource> Result enforce(S subject, R resource, String action) {
         String role = subject.getRole();
         String data = resource.getData();
         List<String> roleList = new ArrayList<>();
@@ -64,9 +64,9 @@ public class StandardController implements Controller {
                     if (hit) {
                         break;
                     }
-                    Rule rule = ruleRepository.findDenyByRoleAndDataAndAction(thisRole, thisObj, thisAct);
-                    if (rule != null) {
-                        Condition condition = rule.getCondition();
+                    Policy policy = policyRepository.findDenyByRoleAndDataAndAction(thisRole, thisObj, thisAct);
+                    if (policy != null) {
+                        Condition condition = policy.getCondition();
                         if (condition != null) {
                             result = condition.onCondition(subject, resource);
                             if (result.isPermit()) {
@@ -87,9 +87,9 @@ public class StandardController implements Controller {
             for (String thisRole : roleList) {
                 for (String thisObj : dataList) {
                     for (String thisAct : actionList) {
-                        Rule rule = ruleRepository.findPermitByRoleAndDataAndAction(thisRole, thisObj, thisAct);
-                        if (rule != null) {
-                            Condition condition = rule.getCondition();
+                        Policy policy = policyRepository.findPermitByRoleAndDataAndAction(thisRole, thisObj, thisAct);
+                        if (policy != null) {
+                            Condition condition = policy.getCondition();
                             if (condition != null) {
                                 return condition.onCondition(subject, resource);
                             } else {
@@ -100,7 +100,7 @@ public class StandardController implements Controller {
                 }
             }
         }
-        return Result.ofUncertain("permission not found");
+        return Result.ofUncertain("policy not found");
     }
 
     @Override
@@ -116,7 +116,7 @@ public class StandardController implements Controller {
         List<String> result = new ArrayList<>();
         for (String thisRole : roleList) {
             for (String thisData : dataList) {
-                result.addAll(ruleRepository.findPermitByRoleAndData(thisRole, thisData).stream().map(Rule::getAction).collect(Collectors.toList()));
+                result.addAll(policyRepository.findPermitByRoleAndData(thisRole, thisData).stream().map(Policy::getAction).collect(Collectors.toList()));
             }
         }
         return result;
@@ -135,15 +135,15 @@ public class StandardController implements Controller {
         List<String> result = new ArrayList<>();
         for (String thisRole : roleList) {
             for (String thisData : dataList) {
-                result.addAll(ruleRepository.findDenyByRoleAndData(thisRole, thisData).stream().map(Rule::getAction).collect(Collectors.toList()));
+                result.addAll(policyRepository.findDenyByRoleAndData(thisRole, thisData).stream().map(Policy::getAction).collect(Collectors.toList()));
             }
         }
         return result;
     }
 
     @Override
-    public void addRule(Rule rule) {
-        ruleRepository.addRule(rule);
+    public void addPolicy(Policy policy) {
+        policyRepository.addPolicy(policy);
     }
 
     @Override

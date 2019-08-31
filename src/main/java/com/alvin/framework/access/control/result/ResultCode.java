@@ -8,19 +8,21 @@ package com.alvin.framework.access.control.result;
 public enum ResultCode {
 
     /**
-     * permit
+     * PERMIT
      */
-    permit,
+    PERMIT,
     /**
-     * deny
+     * DENY
      */
-    deny,
+    DENY,
     /**
-     * uncertain(due to permission not found)
+     * UNCERTAIN(due to permission not found)
      */
-    uncertain,
+    UNCERTAIN,
     /**
-     * improper(defined by condition)
+     * IMPROPER(defined by condition)
      */
-    improper;
+    IMPROPER,
+
+    ;
 }
