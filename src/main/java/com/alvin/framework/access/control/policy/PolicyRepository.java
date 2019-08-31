@@ -53,4 +53,22 @@ public interface PolicyRepository {
      * @return policy
      */
     List<Policy> findDenyByRoleAndData(String role, String data);
+
+    /**
+     * find PERMIT policy by data and action
+     *
+     * @param data data
+     * @param action action
+     * @return policy
+     */
+    List<Policy> findPermitByDataAndAction(String data, String action);
+
+    /**
+     * find DENY policy by data and action
+     *
+     * @param data data
+     * @param action action
+     * @return policy
+     */
+    List<Policy> findDenyByDataAndAction(String data, String action);
 }

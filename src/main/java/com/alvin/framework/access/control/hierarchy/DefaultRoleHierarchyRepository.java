@@ -13,6 +13,7 @@ import java.util.Map;
 public class DefaultRoleHierarchyRepository implements RoleHierarchyRepository {
 
     private Map<String, List<String>> superiorInferiorMap = new HashMap<>();
+    private Map<String, List<String>> inferiorSuperiorMap = new HashMap<>();
 
     @Override
     public List<String> recursiveInferiors(String superior) {
@@ -21,12 +22,11 @@ public class DefaultRoleHierarchyRepository implements RoleHierarchyRepository {
         return result;
     }
 
-    private void recursiveInferiors(String superior, List<String> result) {
-        List<String> directSuperiors = superiorInferiorMap.getOrDefault(superior, new ArrayList<>());
-        for (String directSuperior : directSuperiors) {
-            result.add(directSuperior);
-            recursiveInferiors(directSuperior, result);
-        }
+    @Override
+    public List<String> recursiveSuperiors(String inferior) {
+        List<String> result = new ArrayList<>();
+        recursiveSuperiors(inferior, result);
+        return result;
     }
 
     @Override
@@ -40,5 +40,25 @@ public class DefaultRoleHierarchyRepository implements RoleHierarchyRepository {
             superiorInferiorMap.put(superior, new ArrayList<>());
         }
         superiorInferiorMap.get(superior).add(inferior);
+        if (!inferiorSuperiorMap.containsKey(inferior)) {
+            inferiorSuperiorMap.put(inferior, new ArrayList<>());
+        }
+        inferiorSuperiorMap.get(inferior).add(superior);
+    }
+
+    private void recursiveInferiors(String superior, List<String> result) {
+        List<String> directSuperiors = superiorInferiorMap.getOrDefault(superior, new ArrayList<>());
+        for (String directSuperior : directSuperiors) {
+            result.add(directSuperior);
+            recursiveInferiors(directSuperior, result);
+        }
+    }
+
+    private void recursiveSuperiors(String inferior, List<String> result) {
+        List<String> directInferiors = inferiorSuperiorMap.getOrDefault(inferior, new ArrayList<>());
+        for (String directInferior : directInferiors) {
+            result.add(directInferior);
+            recursiveSuperiors(directInferior, result);
+        }
     }
 }

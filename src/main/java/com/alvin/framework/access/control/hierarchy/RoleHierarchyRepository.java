@@ -18,6 +18,14 @@ public interface RoleHierarchyRepository {
     List<String> recursiveInferiors(String superior);
 
     /**
+     * list all superiors of inferior recursively
+     *
+     * @param inferior inferior
+     * @return list of superior
+     */
+    List<String> recursiveSuperiors(String inferior);
+
+    /**
      * add hierarchy
      *
      * @param hierarchy hierarchy
