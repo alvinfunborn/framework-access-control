@@ -1,5 +1,7 @@
 package com.alvin.framework.access.control.result;
 
+import java.util.Map;
+
 /**
  * datetime 2019/5/16 20:10
  * access enforce result
@@ -71,8 +73,29 @@ public class Result {
         }
     }
 
+    public Result or(Result r) {
+        if (isPermit()) {
+            return this;
+        } else if (r.isPermit()) {
+            return r;
+        } else if (isDeny()) {
+            return this;
+        } else if (r.isDeny()) {
+            return r;
+        }
+        return this;
+    }
+
     public void replaceMsg(String msg) {
         this.msg = msg;
+    }
+
+    public void replaceMsg(Map<ResultCode, String> defaultResultMsg) {
+        if (defaultResultMsg != null && defaultResultMsg.containsKey(code)) {
+            if (msg == null || "".equals(msg.trim())) {
+                replaceMsg(defaultResultMsg.get(code));
+            }
+        }
     }
 
     @Override

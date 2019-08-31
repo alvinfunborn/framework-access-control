@@ -30,9 +30,12 @@ public class DefaultRoleHierarchyRepository implements RoleHierarchyRepository {
     }
 
     @Override
-    public void addHierarchy(Hierarchy hierarchy) {
+    public void addHierarchy(Hierarchy hierarchy) throws IllegalArgumentException {
         String inferior = hierarchy.getInferior();
         String superior = hierarchy.getSuperior();
+        if (recursiveInferiors(inferior).contains(superior)) {
+            throw new IllegalArgumentException();
+        }
         if (!superiorInferiorMap.containsKey(superior)) {
             superiorInferiorMap.put(superior, new ArrayList<>());
         }

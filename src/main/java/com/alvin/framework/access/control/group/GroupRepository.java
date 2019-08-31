@@ -22,5 +22,5 @@ public interface GroupRepository {
      *
      * @param group group
      */
-    void addGroup(Group group);
+    void addGroup(Group group) throws IllegalArgumentException;
 }

@@ -1,6 +1,10 @@
 package com.alvin.framework.access.control.policy;
 
 import com.alvin.framework.access.control.condition.Condition;
+import com.alvin.framework.access.control.result.ResultCode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * datetime 2019/5/16 20:28
@@ -35,21 +39,51 @@ public class Policy {
      */
     private boolean deny;
 
+    private Map<ResultCode, String> defaultResultMsg;
+
+    public static Policy ofPermit(String name, String role, String data, String action) {
+        return new Policy(name, role, data, action, null, false, null);
+    }
+
+    public static Policy ofPermit(String name, String role, String data, String action, Map<ResultCode, String> defaultResultMsg) {
+        return new Policy(name, role, data, action, null, false, defaultResultMsg);
+    }
+
     public static Policy ofPermit(String name, String role, String data, String action, Condition condition) {
-        return new Policy(name, role, data, action, condition, false);
+        return new Policy(name, role, data, action, condition, false, null);
+    }
+
+    public static Policy ofPermit(String name, String role, String data, String action, Condition condition, Map<ResultCode, String> defaultResultMsg) {
+        return new Policy(name, role, data, action, condition, false, defaultResultMsg);
+    }
+
+    public static Policy ofDeny(String name, String role, String data, String action) {
+        return new Policy(name, role, data, action, null, true, null);
+    }
+
+    public static Policy ofDeny(String name, String role, String data, String action, Map<ResultCode, String> defaultResultMsg) {
+        return new Policy(name, role, data, action, null, true, defaultResultMsg);
     }
 
     public static Policy ofDeny(String name, String role, String data, String action, Condition condition) {
-        return new Policy(name, role, data, action, condition, true);
+        return new Policy(name, role, data, action, condition, true, null);
     }
 
-    private Policy(String name, String role, String data, String action, Condition condition, boolean deny) {
+    public static Policy ofDeny(String name, String role, String data, String action, Condition condition, Map<ResultCode, String> defaultResultMsg) {
+        return new Policy(name, role, data, action, condition, true, defaultResultMsg);
+    }
+
+    private Policy(String name, String role, String data, String action, Condition condition, boolean deny, Map<ResultCode, String> defaultResultMsg) {
         this.name = name;
         this.role = role;
         this.data = data;
         this.action = action;
         this.condition = condition;
         this.deny = deny;
+        if (defaultResultMsg != null) {
+            this.defaultResultMsg = new HashMap<>(defaultResultMsg.size());
+            this.defaultResultMsg.putAll(defaultResultMsg);
+        }
     }
 
     public String getName() {
@@ -98,5 +132,16 @@ public class Policy {
 
     public void setDeny(boolean deny) {
         this.deny = deny;
+    }
+
+    public Map<ResultCode, String> getDefaultResultMsg() {
+        return defaultResultMsg;
+    }
+
+    public void setDefaultResultMsg(Map<ResultCode, String> defaultResultMsg) {
+        if (defaultResultMsg != null) {
+            this.defaultResultMsg = new HashMap<>(defaultResultMsg.size());
+            this.defaultResultMsg.putAll(defaultResultMsg);
+        }
     }
 }

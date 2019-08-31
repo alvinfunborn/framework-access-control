@@ -22,5 +22,5 @@ public interface RoleHierarchyRepository {
      *
      * @param hierarchy hierarchy
      */
-    void addHierarchy(Hierarchy hierarchy);
+    void addHierarchy(Hierarchy hierarchy) throws IllegalArgumentException;
 }

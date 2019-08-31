@@ -14,18 +14,18 @@ public class Group {
     /**
      * member name
      */
-    private String member;
+    private String[] member;
 
-    public Group(String group, String member) {
+    public Group(String group, String... member) {
         this.group = group;
         this.member = member;
     }
 
-    public String getMember() {
+    public String[] getMember() {
         return member;
     }
 
-    public void setMember(String member) {
+    public void setMember(String[] member) {
         this.member = member;
     }
 

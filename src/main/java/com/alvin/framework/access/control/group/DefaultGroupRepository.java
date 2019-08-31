@@ -30,12 +30,18 @@ public class DefaultGroupRepository implements GroupRepository {
     }
 
     @Override
-    public void addGroup(Group group) {
-        String inferior = group.getMember();
+    public void addGroup(Group group) throws IllegalArgumentException {
+        String[] inferiors = group.getMember();
         String superior = group.getGroup();
-        if (!memberGroupMap.containsKey(inferior)) {
-            memberGroupMap.put(inferior, new ArrayList<>());
+        List<String> superiorGroups = recursiveGroups(superior);
+        for (String inferior : inferiors) {
+            if (superiorGroups.contains(inferior)) {
+                throw new IllegalArgumentException();
+            }
+            if (!memberGroupMap.containsKey(inferior)) {
+                memberGroupMap.put(inferior, new ArrayList<>());
+            }
+            memberGroupMap.get(inferior).add(superior);
         }
-        memberGroupMap.get(inferior).add(superior);
     }
 }
