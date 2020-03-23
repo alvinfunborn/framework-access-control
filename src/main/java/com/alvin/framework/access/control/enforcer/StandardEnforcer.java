@@ -16,8 +16,7 @@ import com.alvin.framework.access.control.policy.PolicyRepository;
 import com.alvin.framework.access.control.result.Result;
 import com.alvin.framework.access.control.result.ResultCode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -65,16 +64,16 @@ public class StandardEnforcer implements StaticRoleEnforcer, DynamicRoleEnforcer
     }
 
     private <S extends Subject, R extends Resource> Result doEnforce(S subject, R resource, String action) {
-        String role = subject.getRole();
+        List<String> roles = Arrays.asList(subject.getRole().split(","));
         String data = resource.getData();
-        List<String> superiorRoleList = new ArrayList<>();
-        List<String> inferiorRoleList = new ArrayList<>();
+        Set<String> superiorRoleList = new HashSet<>(roles);
+        Set<String> inferiorRoleList = new HashSet<>(roles);
+        for (String role : roles) {
+            superiorRoleList.addAll(roleHierarchyRepository.recursiveSuperiors(role));
+            inferiorRoleList.addAll(roleHierarchyRepository.recursiveInferiors(role));
+        }
         List<String> dataList = new ArrayList<>();
         List<String> actionList = new ArrayList<>();
-        superiorRoleList.add(role);
-        superiorRoleList.addAll(roleHierarchyRepository.recursiveSuperiors(role));
-        inferiorRoleList.add(role);
-        inferiorRoleList.addAll(roleHierarchyRepository.recursiveInferiors(role));
         dataList.add(data);
         dataList.addAll(dataGroupRepository.recursiveGroups(data));
         actionList.add(action);
