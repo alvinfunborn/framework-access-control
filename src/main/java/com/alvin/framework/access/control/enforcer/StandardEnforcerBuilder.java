@@ -23,7 +23,7 @@ public class StandardEnforcerBuilder {
     private DataGroupRepository dataHierarchyRepository;
     private ActionGroupRepository actionHierarchyRepository;
 
-    public StandardEnforcerBuilder withRuleRepository(PolicyRepository policyRepository) {
+    public StandardEnforcerBuilder withPolicyRepository(PolicyRepository policyRepository) {
         this.policyRepository = policyRepository;
         return this;
     }
