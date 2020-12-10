@@ -11,7 +11,7 @@ public class Resource {
     /**
      * data name
      */
-    private String data;
+    protected String data;
 
     public Resource(String data) {
         this.data = data;
